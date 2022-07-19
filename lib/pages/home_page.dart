@@ -5,6 +5,7 @@ import 'package:modul_8/examle_in_youtube/pages/create.dart';
 import 'package:modul_8/services/http_service.dart';
 import 'package:modul_8/viewmodel/home_page_viewmodel.dart';
 import 'package:provider/provider.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 import '../examle_in_youtube/pages/edit.dart';
 import '../model/post_model.dart';
@@ -19,7 +20,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  HomePageViewModel homePageViewModel = HomePageViewModel();
+  final HomePageViewModel homePageViewModel = HomePageViewModel();
 
   @override
   void initState() {
@@ -33,9 +34,9 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text("Provider"),
       ),
-      body: ChangeNotifierProvider(
-        create: (BuildContext context) => homePageViewModel,
-        child: Consumer<HomePageViewModel>(
+      body: ScopedModel(
+        model: homePageViewModel,
+        child: ScopedModelDescendant<HomePageViewModel>(
           builder: (context,model,index)=>Stack(
             children: [
               ListView.builder(

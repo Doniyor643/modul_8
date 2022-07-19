@@ -1,11 +1,10 @@
 
-import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 import '../model/post_model.dart';
 import '../services/http_service.dart';
-
-class HomePageViewModel extends ChangeNotifier{
+final HomePageViewModel homePageViewModel = HomePageViewModel();
+class HomePageViewModel extends Model{
 
   List<Post> items = [];
   bool isLoading = false;
