@@ -5,7 +5,7 @@ import 'package:modul_8/examle_in_youtube/contants/base_api.dart';
 import 'package:modul_8/examle_in_youtube/theme/theme_colors.dart';
 import 'package:http/http.dart' as http;
 
-class EditUser extends StatefulWidget {
+class EditUser extends StatefulWidget{
   final String userId;
   final String userText;
   final String userBody;
@@ -23,11 +23,10 @@ class _EditUserState extends State<EditUser> {
   @override
   void initState() {
     super.initState();
-    setState((){
       id = widget.userId;
       titleController.text = widget.userText;
       bodyController.text = widget.userBody;
-    });
+
   }
 
   @override

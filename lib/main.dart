@@ -23,10 +23,10 @@ class MyApp extends StatelessWidget {
         //primarySwatch: Colors.red,
       ),
       debugShowCheckedModeBanner: false,
-      home: const IndexPage(),
-      // routes: {
-      //   HomePage.id:(context)=> const HomePage(),
-      // },
+      home: const HomePage(),
+      routes: {
+        HomePage.id:(context)=> const HomePage(),
+      },
     );
   }
 }

@@ -1,9 +1,12 @@
-import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:http/http.dart' as http;
+import 'package:modul_8/examle_in_youtube/pages/create.dart';
 import 'package:modul_8/services/http_service.dart';
+import 'package:modul_8/viewmodel/home_page_viewmodel.dart';
+import 'package:provider/provider.dart';
 
+import '../examle_in_youtube/pages/edit.dart';
 import '../model/post_model.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,65 +19,49 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  List<Post> items = [];
-  bool isLoading = false;
-
-  void _apiPostList()async{
-    setState((){
-      isLoading = true;
-    });
-    var response = await Network.getRequest(Network.apiList, Network.paramsEmpty());
-    setState((){
-      if(response != null){
-        items = Network.parsePostList(response);
-      }else{
-        items = [];
-      }
-      isLoading = false;
-    });
-  }
-
-  void _apiPostDelete(Post post) async {
-    setState(() {
-      isLoading = true;
-    });
-    var response = await Network.deleteRequest(Network.apiList + post.id.toString(), Network.paramsEmpty());
-    setState(() {
-      if (response != null) {
-        _apiPostList();
-      }
-      isLoading = false;
-    });
-  }
+  HomePageViewModel homePageViewModel = HomePageViewModel();
 
   @override
   void initState() {
     super.initState();
-    _apiPostList();
+    homePageViewModel.apiPostList();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("setState"),
+        title: const Text("Provider"),
       ),
-      body: Stack(
-          children: [
-            ListView.builder(
-              itemCount: items.length,
-              itemBuilder: (context, index){
-                return itemOfPost(items[index]);
-              }),
-            isLoading
-                ?
-            const Center(
-              child: CircularProgressIndicator(),
-            )
-                :
-            const SizedBox.shrink()
-          ],
-        )
+      body: ChangeNotifierProvider(
+        create: (BuildContext context) => homePageViewModel,
+        child: Consumer<HomePageViewModel>(
+          builder: (context,model,index)=>Stack(
+            children: [
+              ListView.builder(
+                  itemCount: homePageViewModel.items.length,
+                  itemBuilder: (context, index){
+                    return itemOfPost(homePageViewModel.items[index]);
+                  }),
+              homePageViewModel.isLoading
+                  ?
+              const Center(
+                child: CircularProgressIndicator(),
+              )
+                  :
+              const SizedBox.shrink()
+            ],
+          ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(
+              builder: (context) => const CreateUser()));
+        },
+        child: const Icon(Icons.add),
+
+      ),
 
     );
   }
@@ -96,7 +83,14 @@ class _HomePageState extends State<HomePage> {
           children: [
             SlidableAction(
               backgroundColor: Colors.green,
-              onPressed: (context){},
+              onPressed: (context){
+                Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => EditUser(
+                      userId: post.id.toString(),
+                      userBody: post.body,
+                      userText: post.title,
+                    )));
+              },
               icon: Icons.drive_file_rename_outline,
               label: "Rename",),
           ]),
