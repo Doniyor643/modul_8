@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:modul_8/examle_in_youtube/contants/base_api.dart';
 import 'package:modul_8/examle_in_youtube/theme/theme_colors.dart';
 import 'package:http/http.dart' as http;
+import 'package:modul_8/stores/home_store.dart';
 
 class EditUser extends StatefulWidget{
   final String userId;
@@ -19,6 +20,7 @@ class _EditUserState extends State<EditUser> {
 
   TextEditingController titleController = TextEditingController();
   TextEditingController bodyController = TextEditingController();
+  HomeStore store = HomeStore();
   String id = '';
   @override
   void initState() {
@@ -65,7 +67,7 @@ class _EditUserState extends State<EditUser> {
           color: primary,
           child: ElevatedButton(
             onPressed: (){
-              editUser();
+              store.editUser(titleController: titleController,bodyController: bodyController);
             },
             child: const Center(child: Text("Done"),),
           ),

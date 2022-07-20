@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:modul_8/examle_in_youtube/contants/base_api.dart';
 import 'package:modul_8/examle_in_youtube/theme/theme_colors.dart';
 import 'package:http/http.dart' as http;
+import 'package:modul_8/stores/home_store.dart';
 
 class CreateUser extends StatefulWidget {
   const CreateUser({Key? key}) : super(key: key);
@@ -16,6 +17,8 @@ class _CreateUserState extends State<CreateUser> {
 
   TextEditingController titleController = TextEditingController();
   TextEditingController bodyController = TextEditingController();
+
+  HomeStore store = HomeStore();
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +56,7 @@ class _CreateUserState extends State<CreateUser> {
           color: primary,
           child: ElevatedButton(
               onPressed: (){
-                createNewUser();
+                store.createNewUser(titleController: titleController,bodyController: bodyController);
               },
               child: const Center(child: Text("Done"),),
               ),
