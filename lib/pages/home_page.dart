@@ -1,8 +1,10 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:modul_8/examle_in_youtube/pages/create.dart';
 import 'package:modul_8/services/http_service.dart';
+import 'package:modul_8/stores/home_store.dart';
 import 'package:modul_8/viewmodel/home_page_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -21,6 +23,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   final HomePageViewModel homePageViewModel = HomePageViewModel();
+  final HomeStore store = HomeStore();
 
   @override
   void initState() {
@@ -32,27 +35,24 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Provider"),
+        title: const Text("MobX"),
       ),
-      body: ScopedModel(
-        model: homePageViewModel,
-        child: ScopedModelDescendant<HomePageViewModel>(
-          builder: (context,model,index)=>Stack(
-            children: [
-              ListView.builder(
-                  itemCount: homePageViewModel.items.length,
-                  itemBuilder: (context, index){
-                    return itemOfPost(homePageViewModel.items[index]);
-                  }),
-              homePageViewModel.isLoading
-                  ?
-              const Center(
-                child: CircularProgressIndicator(),
-              )
-                  :
-              const SizedBox.shrink()
-            ],
-          ),
+      body: Observer(
+        builder: (_)=>Stack(
+          children: [
+            ListView.builder(
+                itemCount: store.items.length,
+                itemBuilder: (context, index){
+                  return itemOfPost(store.items[index]);
+                }),
+            store.isLoading
+                ?
+            const Center(
+              child: CircularProgressIndicator(),
+            )
+                :
+            const SizedBox.shrink()
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
