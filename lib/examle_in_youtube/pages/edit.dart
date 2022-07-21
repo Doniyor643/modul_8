@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:modul_8/examle_in_youtube/contants/base_api.dart';
 import 'package:modul_8/examle_in_youtube/theme/theme_colors.dart';
-import 'package:http/http.dart' as http;
+
 import 'package:modul_8/stores/home_store.dart';
+
+import '../../stores/edit_store.dart';
 
 class EditUser extends StatefulWidget{
   final String userId;
@@ -20,7 +22,8 @@ class _EditUserState extends State<EditUser> {
 
   TextEditingController titleController = TextEditingController();
   TextEditingController bodyController = TextEditingController();
-  HomeStore store = HomeStore();
+
+  EditStore store = EditStore();
   String id = '';
   @override
   void initState() {
@@ -75,24 +78,24 @@ class _EditUserState extends State<EditUser> {
       ],
     );
   }
-  editUser()async{
-    String title = titleController.text;
-    String body = bodyController.text;
-    if(title.isNotEmpty && body.isNotEmpty){
-      var bodyData = jsonEncode({
-        "title":title,
-        "body":body
-      });
-      var response = await http.put(
-        Uri.parse("$baseAPI$otherAPI/${widget.userId}"),
-        headers: headers,
-        body: bodyData
-      );
-      if(response.statusCode == 200 || response.statusCode == 201){
-        print(response.body);
-      }else{
-        print('error');
-      }
-    }
-  }
+  // editUser()async{
+  //   String title = titleController.text;
+  //   String body = bodyController.text;
+  //   if(title.isNotEmpty && body.isNotEmpty){
+  //     var bodyData = jsonEncode({
+  //       "title":title,
+  //       "body":body
+  //     });
+  //     var response = await http.put(
+  //       Uri.parse("$baseAPI$otherAPI/${widget.userId}"),
+  //       headers: headers,
+  //       body: bodyData
+  //     );
+  //     if(response.statusCode == 200 || response.statusCode == 201){
+  //       print(response.body);
+  //     }else{
+  //       print('error');
+  //     }
+  //   }
+  // }
 }
